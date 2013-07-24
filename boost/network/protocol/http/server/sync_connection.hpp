@@ -52,7 +52,9 @@ namespace boost { namespace network { namespace http {
             //
             using boost::asio::ip::tcp;
             boost::system::error_code option_error;
-            socket_.set_option(tcp::no_delay(true), option_error);
+            if (socket_.is_open()) {
+                socket_.set_option(tcp::no_delay(true), option_error);
+            }
             if (option_error) handler_.log(boost::system::system_error(option_error).what());
             socket_.async_read_some(
                 boost::asio::buffer(buffer_),
